@@ -1,39 +1,29 @@
-function letterCombinations(digits) {
-  const digitToLetters = {
-    '0': '0',
-    '1': '1',
-    '2': 'abc',
-    '3': 'def',
-    '4': 'ghi',
-    '5': 'jkl',
-    '6': 'mno',
-    '7': 'pqrs',
-    '8': 'tuv',
-    '9': 'wxyz',
-  };
+let res = [];
 
-  const combinations = [];
+function letterCombinations(input_digit) {
+  let arr = [0, 1, 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
+  helper(arr, input_digit, res, 0, '');
+  return res.sort((a, b) => a.length - b.length || a.localeCompare(b));
+}
 
-  if (digits.length === 0) {
-    return combinations;
+function helper(arr, input_digit, res, index, str) {
+  if (str.length === input_digit.length) {
+    res.push(str);
+    return;
   }
-
-  backtrack('', digits);
-
-  return combinations;
-
-  function backtrack(combination, nextDigits) {
-    if (nextDigits.length === 0) {
-      combinations.push(combination);
-      return;
-    }
-
-    const currentDigit = nextDigits[0];
-    const letters = digitToLetters[currentDigit];
-
-    for (let i = 0; i < letters.length; i++) {
-      const letter = letters[i];
-      backtrack(combination + letter, nextDigits.slice(1));
-    }
+  
+  if (index === input_digit.length) {
+    return;
+  }
+  
+  let match = parseInt(input_digit[index]);
+  let ss = arr[match];
+  
+  for (let i = 0; i < ss.length; i++) {
+    str = str + ss[i];
+    helper(arr, input_digit, res, index + 1, str);
+    str = str.substring(0, str.length - 1);
   }
 }
+
+module.exports = letterCombinations;
